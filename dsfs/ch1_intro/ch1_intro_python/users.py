@@ -35,7 +35,7 @@ for u in users:
     print(u)
 '''
 
-def avg_num_friend_connections():
+def avg_connections():
     sum = 0
     avg = 0
     for u  in users:
@@ -43,15 +43,41 @@ def avg_num_friend_connections():
     avg = sum/len(users)
     return avg
 
+def most_connected_users():
+    _users = []
+    for u in users:
+        _users.append(u)
+        _users['sum_connects'] = len(u.get('friends'))
+    return _users
+
+def most_connected_users_by_id():
+    _users = []
+    for u in users:
+        _users.append((u['id'],len(u['friends'])))
+    return _users
+
+def get_their_friends(friend):
+    return friend.get('friends')
+
+def who_you_may_know():
+    pass
+        
+        
+
 def bootstrap():
     for u in range(len(users)):
         id = users[u].get("id")
         for f in friendships:
             if f[0] == id:
                 users[u]['friends'].append(f[1])
+
 def __main__():
     bootstrap()
+    print(avg_connections())
+    _users = most_connected_users_by_id()
+    #print(_users)
     print(users)
+
 
 
 __main__()
