@@ -59,8 +59,33 @@ def most_connected_users_by_id():
 def get_their_friends(friend):
     return friend.get('friends')
 
-def who_you_may_know():
-    pass
+def who_you_may_know(id):
+    _id = id
+    friends = []
+    who_i_may_know = []
+    for u in users :
+        if _id == users.get('id'):
+            friends = u.get('friends')
+            for f in friends:
+                who_i_may_know = f.get('friends')
+                break
+            break
+    return who_i_may_know
+
+
+
+
+
+
+    '''
+    for u in users:
+        id = u.get('id')
+        friends = u.get('friends')
+        for f in friends:
+            who_i_may_know.append(f)
+    '''
+
+
         
         
 
