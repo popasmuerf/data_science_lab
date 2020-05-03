@@ -1,0 +1,73 @@
+//version='0.0.1' 
+//def scalaVersion = '2.12.10'
+//def slf4jVersion='1.7.21'
+//def logbackVersion='1.1.7'
+//def sparkVersion='2.4.5'
+
+// -------- DEPENDENCIES --------
+// Sample dependencies
+// def playJsonDep = "com.typesafe.play:play-json_$scalaVersion:2.6.9".toString()
+// def jodaDep = 'org.joda:joda-convert:2.1'
+// ------------------------------
+
+// for scalaTest
+
+plugins{
+    id 'scala'
+    id 'java'
+
+   
+}
+
+
+repositories {
+    mavenCentral()
+}
+
+
+dependencies {
+    implementation 'org.scala-lang:scala-library:2.12.10'
+    compile group: 'org.scala-lang', name: 'scala-library', version: '2.12.10'
+    // https://mvnrepository.com/artifact/org.apache.spark/spark-core
+    compile group: 'org.apache.spark', name: 'spark-core_2.12', version: '2.4.5'
+    // https://mvnrepository.com/artifact/org.apache.spark/spark-graphx
+   compile group: 'org.apache.spark', name: 'spark-graphx_2.12', version: '2.4.5'
+    // https://mvnrepository.com/artifact/org.apache.spark/spark-mllib
+    runtime group: 'org.apache.spark', name: 'spark-mllib_2.12', version: '2.4.5'
+
+
+    testImplementation 'org.scalatest:scalatest_2.11:3.0.0'
+    testImplementation 'junit:junit:4.12'
+}
+
+configurations.all {
+    resolutionStrategy {
+        force 'com.google.guava:guava:12.0.1'
+    }
+}
+
+
+compileScala.targetCompatibility = "1.8"
+compileScala.sourceCompatibility = "1.8"
+
+jar {
+    zip64 true
+    archiveName = "StackOverFlowSurvey-spark.jar"
+    from {
+        configurations.compile.collect {
+            it.isDirectory() ? it : zipTree(it)
+        }
+    }
+    manifest {
+        attributes 'Main-Class': 'Driver'
+    }
+
+    exclude 'META-INF/*.RSA', 'META-INF/*.SF','META-INF/*.DSA'
+
+}
+
+
+task run(type: JavaExec, dependsOn: classes) {
+   main = 'Driver'
+   classpath = sourceSets.main.runtimeClasspath
+}
